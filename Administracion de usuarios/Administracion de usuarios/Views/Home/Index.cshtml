@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Administracion_de_usuarios.Models.User>
+
+@{
+    ViewBag.Title = "Index";    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Administracion de usuarios</h2>
+        </div>
+        <div class="col-sm-6">            
+            <p class="pull-right">@ViewBag.day, hoy es <strong>@DateTime.Now.Day/@DateTime.Now.Month/@DateTime.Now.Year</strong></p>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-success" onclick="location.href='@Url.Action("Nuevo","Home")'">Crear usuario <span class="icon-user-add"></span></button>
+    </div>
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>---</th>
+            </tr>
+            @foreach(var item in Model)
+            {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => item.UserLastName)</td>
+                <td><button class="btn btn-primary" onclick="location.href='@Url.Action("Detalles", "Home", new { id=item.UserId})'">Ver mas</button></td>
+            </tr>
+            }
+        </table>
+    </div>
+</div>

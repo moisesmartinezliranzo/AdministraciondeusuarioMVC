@@ -1,0 +1,19 @@
+﻿@model Administracion_de_usuarios.Models.User
+
+@{
+    ViewBag.Title = "Detalles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <ul>
+        <li>Nombre: @Html.DisplayFor(model => model.UserName)</li>
+        <li>Apellido: @Html.DisplayFor(model => model.UserLastName)</li>
+        <li>Direccion: @Html.DisplayFor(model => model.UserAddr)</li>
+        <li>Email: @Html.DisplayFor(model => model.UserEmail)</li>
+        <li>Telefono: @Html.DisplayFor(model => model.UserPhone)</li>
+        <li>Genero: @Html.DisplayFor(model => model.UserGender)</li>
+    </ul>
+
+</div>
