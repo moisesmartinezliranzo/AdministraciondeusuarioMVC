@@ -20,6 +20,7 @@ namespace Administracion_de_usuarios.Models
         public string UserEmail { get; set; }
         public string UserPhone { get; set; }
         public string UserGender { get; set; }
+        public Dictionary<string, string> userGenderOption { get; set; }
 
         public User()
         {
@@ -54,8 +55,8 @@ namespace Administracion_de_usuarios.Models
             userList = myDataTable.AsEnumerable().Select(u => new User
             {
                 UserId = (int)u["id"],
-                UserName = u["Nombre"].ToString(),
-                UserLastName = u["Apellido"].ToString(),
+                UserName = UpperFirstLetter(u["Nombre"].ToString()),
+                UserLastName = UpperFirstLetter(u["Apellido"].ToString()),
                 UserAddr = u["Dirección"].ToString(),
                 UserEmail = u["Email"].ToString(),
                 UserPhone = u["Teléfono"].ToString(),
@@ -78,8 +79,8 @@ namespace Administracion_de_usuarios.Models
             User user = myDataTable.AsEnumerable().Select(u => new User
             {
                 UserId = (int)u["id"],
-                UserName = u["Nombre"].ToString(),
-                UserLastName = u["Apellido"].ToString(),
+                UserName = UpperFirstLetter(u["Nombre"].ToString()),
+                UserLastName = UpperFirstLetter(u["Apellido"].ToString()),
                 UserAddr = u["Dirección"].ToString(),
                 UserEmail = u["Email"].ToString(),
                 UserPhone = u["Teléfono"].ToString(),
@@ -105,9 +106,40 @@ namespace Administracion_de_usuarios.Models
             return true;
         }
 
+        public User UpdateUser(int id, string name, string last_name, string addr, string email, string phone, string gender)
+        {
+            myCommand = new SqlCommand("SP_UpdateUser", MyConnection.GetConnection());
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.Parameters.Add("@name", SqlDbType.VarChar).Value = name;
+            myCommand.Parameters.Add("@last_name", SqlDbType.VarChar).Value = last_name;
+            myCommand.Parameters.Add("@addr", SqlDbType.VarChar).Value = addr;
+            myCommand.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
+            myCommand.Parameters.Add("@phone", SqlDbType.VarChar).Value = phone;
+            myCommand.Parameters.Add("@gender", SqlDbType.VarChar).Value = gender;
+            myCommand.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            myCommand.ExecuteNonQuery();
+
+            mySqlAdapter = new SqlDataAdapter(myCommand);
+
+            mySqlAdapter.Fill(myDataTable);
+
+            User user = myDataTable.AsEnumerable().Select(u => new User
+            {
+                UserId = (int)u["id"],
+                UserName = UpperFirstLetter(u["Nombre"].ToString()),
+                UserLastName = UpperFirstLetter(u["Apellido"].ToString()),
+                UserAddr = u["Dirección"].ToString(),
+                UserEmail = u["Email"].ToString(),
+                UserPhone = u["Teléfono"].ToString(),
+                UserGender = u["Género"].ToString()
+            }).First();
+
+            return user;
+        }
+
         public bool DeleteUser(int id)
         {
-            myCommand = new SqlCommand("SP_ListUsersById", MyConnection.GetConnection());
+            myCommand = new SqlCommand("SP_DeleteUser", MyConnection.GetConnection());
             myCommand.CommandType = CommandType.StoredProcedure;
             myCommand.Parameters.Add("@id", SqlDbType.Int).Value = id;
 
@@ -115,5 +147,15 @@ namespace Administracion_de_usuarios.Models
 
             return (bol>0);
         }
+
+        private string UpperFirstLetter(string firtLetterUpper)
+        {
+            if (string.IsNullOrEmpty(firtLetterUpper))
+            {
+                return string.Empty;
+            }
+            return char.ToUpper(firtLetterUpper[0]) + firtLetterUpper.Substring(1);
+        }
+
     }
 }

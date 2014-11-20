@@ -31,7 +31,11 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.UserName)</td>
                 <td>@Html.DisplayFor(modelItem => item.UserLastName)</td>
-                <td><button class="btn btn-primary" onclick="location.href='@Url.Action("Detalles", "Home", new { id=item.UserId})'">Ver mas</button></td>
+                <td>
+                    <button class="btn btn-primary btn-xs" onclick="location.href='@Url.Action("Usuario", "Home", new { id=item.UserId})'"><span class="icon-user-6"></span></button>
+                    <button class="btn btn-warning btn-xs" ><span class="icon-pencil-6"></span></button>
+                    <button class="btn btn-danger btn-xs" onclick="location.href='@Url.Action("Eliminar", "Home", new {id=item.UserId })'"><span class="icon-trash-7"></span></button>
+                </td>
             </tr>
             }
         </table>

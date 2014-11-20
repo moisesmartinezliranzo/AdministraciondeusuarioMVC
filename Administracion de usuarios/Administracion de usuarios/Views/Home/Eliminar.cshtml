@@ -1,0 +1,22 @@
+﻿@model Administracion_de_usuarios.Models.MyConnection
+
+@{
+    ViewBag.Title = "Eliminar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2>Eliminar</h2>
+
+    <h3>Esta seguro que desea eliminar este usuario</h3>
+    
+    @using (Html.BeginForm("Eliminar", "Home", FormMethod.Post, new{@class = "form-horizontal"})) {
+        @Html.AntiForgeryToken()
+        <div>
+            <button type="submit" class="btn btn-danger"><span class="icon-trash-7"></span></button>
+            <input type="submit" value="Delete" /> |
+            @Html.ActionLink("Back to List", "Index")
+            <button class="btn btn-default" type="reset" onclick="location.href='@Url.Action("index")'"><span class="icon-back"></span></button>
+        </div>
+    }
+</div>
